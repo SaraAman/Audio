@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <RelativeLayout
+<!--    <RelativeLayout-->
         android:id="@+id/add_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -21,16 +21,6 @@
             android:textColor="@color/brown"
             android:textSize="60sp" />
 
-        <!--            <Button-->
-        <!--                android:id="@+id/button_reset"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/text_view_countdown"-->
-
-        <!--                android:text="reset"-->
-        <!--                android:visibility="invisible"-->
-        <!--                tools:visibility="visible" />-->
-        <!--    -->
 
         <Button
             android:id="@+id/button_start_pause"
@@ -38,15 +28,16 @@
             android:layout_height="80dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginStart="130dp"
+            android:layout_marginStart="97dp"
 
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="97dp"
             android:layout_marginTop="100dp"
+
+
             android:layout_toStartOf="@+id/stopRecording"
             android:layout_toLeftOf="@+id/stopRecording"
             android:background="@drawable/ic_baseline_keyboard_voice_24"
-            android:onClick="addRecording"
-            android:layout_marginRight="50dp" />
+            android:onClick="addRecording" />
 
         <Button
             android:id="@+id/stopRecording"
@@ -55,33 +46,65 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="100dp"
-            android:layout_marginEnd="142dp"
-            android:layout_marginRight="142dp"
+            android:layout_marginEnd="170dp"
+            android:layout_marginRight="170dp"
             android:background="@drawable/ic_baseline_stop_24"
             android:onClick="stopRecording" />
 
-        <!--        <Button-->
-<!--            android:id="@+id/saveRecording"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_marginTop="100dp"-->
-<!--            android:layout_marginEnd="110dp"-->
-<!--            android:layout_marginRight="127dp"-->
-<!--            android:background="@drawable/ic_baseline_save_alt_24"-->
-<!--            android:onClick="saveAudio" />-->
+        <Button
+            android:id="@+id/saveRecording"
+            android:layout_width="50dp"
+            android:layout_height="80dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginRight="127dp"
+            android:background="@drawable/ic_baseline_play_arrow_24"
+            android:onClick="playAudio" />
 
 
-    </RelativeLayout>
+<!--   /// </RelativeLayout>-->
 
-    <androidx.recyclerview.widget.RecyclerView
+    <Button
+        android:id="@+id/button_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        android:id="@+id/audio_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/add_layout"
-        android:layout_marginTop="0dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="62dp"
+        android:layout_marginRight="62dp"
+        android:layout_marginBottom="232dp"
+        android:layout_toStartOf="@+id/button_delete"
+        android:layout_toLeftOf="@+id/button_delete"
+        android:text="Upload"
+        android:onClick="uploadAudio"
+
+        />
+
+    <Button
+        android:id="@+id/button_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="85dp"
+        android:layout_marginRight="85dp"
+        android:layout_marginBottom="230dp"
+        android:onClick="deleteAudio"
+        android:text="Delete" />
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+
+<!--        android:id="@+id/audio_recyclerview"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/add_layout"-->
+<!--        android:layout_marginTop="0dp" />-->
 
 
 </RelativeLayout>

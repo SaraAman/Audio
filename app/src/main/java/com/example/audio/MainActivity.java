@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,27 +30,22 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AudioInterface {
     private Chronometer mTextViewCountDown;
-    private File[] recentAudio;
+    //    private File[] recentAudio;
     private int[] colors = new int[]{R.color.white_green, R.color.sea_green, R.color.off_white,
             R.color.brown, R.color.light_green, R.color.peach};
-    private Button mButtonPause;
-    private Button play_button;
+    //    private Button mButtonPause;
+//    private Button play_button;
     int count = 0;
-    AudioInterface audioInterface;
+    //    AudioInterface audioInterface;
     Chronometer chrono;
-    RecyclerView recyclerView;
-    SeekBar seekBar;
-    AudioAdaptor audioAdaptor;
+    //    RecyclerView recyclerView;
+//    SeekBar seekBar;
+//    AudioAdaptor audioAdaptor;
     File file2;
     File myDir;
-    ArrayList<File> files   = new ArrayList<>();
-    TextView recording;
+    //    ArrayList<File> files = new ArrayList<>();
+//    TextView recording;
     MediaRecorder mediaRecorder;
-//    File myDir = new File(Environment.getExternalStorageDirectory() + "/" + "MyAudio/");
-//    String audiFilePath = "DemoApp" + "_" + DateFormat.format("MM-dd-yy hh-mm-ss", new Date().getTime()) + ".mp3";
-
-    // public static String filename = "recorded.3gp";
-    // String file = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AudioInterface {
         setContentView(R.layout.activity_main);
 
         initView();
-        initListeners();
+
 
         String status = Environment.getExternalStorageState();
         if (status.equals("mounted")) {
@@ -68,45 +65,33 @@ public class MainActivity extends AppCompatActivity implements AudioInterface {
             file2 = new File(myDir, fname3);
         }
 
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setOutputFile(file2.getAbsolutePath());
-
-//        String status = Environment.getExternalStorageState();
-//        if(status.equals("mounted")){
-//            if (!myDir.exists())
-//                myDir.mkdirs();
-//            mediaRecorder = new MediaRecorder();
-//
-//            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//            mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-//            mediaRecorder.setOutputFile(myDir);
-//
-//
-//
-//
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recentAudio = new File[myDir.listFiles().length];
-        recentAudio = myDir.listFiles();
-        Log.d("mainDir", String.valueOf(myDir.listFiles().length));
-
-        if (recentAudio.length != 0) {
-            for(int i=0; i < recentAudio.length; i++){
-                files.add(recentAudio[i]);
-            }
-            audioAdaptor = new AudioAdaptor(files, colors, MainActivity.this);
-            recyclerView.setAdapter(audioAdaptor);
+        if(mediaRecorder ==  null) {
+            initPlayer();
         }
+//
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recentAudio = new File[myDir.listFiles().length];
+//        recentAudio = myDir.listFiles();
+//        Log.d("mainDir", String.valueOf(myDir.listFiles().length));
+//
+//        if (recentAudio.length != 0) {
+//            for(int i=0; i < recentAudio.length; i++){
+//                files.add(recentAudio[i]);
+//            }
+//            audioAdaptor = new AudioAdaptor(files, colors, MainActivity.this);
+//            recyclerView.setAdapter(audioAdaptor);
+//        }
 
     }
 
 
-    private void initListeners() {
+    private void initPlayer() {
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mediaRecorder.setOutputFile(file2.getAbsolutePath());
 
     }
 
@@ -114,37 +99,34 @@ public class MainActivity extends AppCompatActivity implements AudioInterface {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initView() {
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
-        recyclerView = findViewById(R.id.audio_recyclerview);
-        mButtonPause = findViewById(R.id.pause_button);
-        play_button = findViewById(R.id.play_button);
+        // recyclerView = findViewById(R.id.audio_recyclerview);
+//        mButtonPause = findViewById(R.id.pause_button);
+//        play_button = findViewById(R.id.play_button);
         chrono = (Chronometer) findViewById(R.id.text_view_countdown);
 
     }
 
-
-
-    private void stopRecording() {
-
-        try {
-            ((Chronometer) findViewById(R.id.text_view_countdown)).stop();
-            mediaRecorder.reset();
-            mediaRecorder.release();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void addRecording() {
-        mediaRecorder.setMaxDuration(10000);
+
+//        mediaRecorder.release();
+//        mediaRecorder = null;
         try {
+            // mediaRecorder.setMaxDuration(10000);
+               if(mediaRecorder != null) {
+                   mediaRecorder.prepare();
+                   mediaRecorder.start();
+               }else {
+                   initPlayer();
 
-            mediaRecorder.prepare();
-            mediaRecorder.start();
+                   mediaRecorder.prepare();
+                   mediaRecorder.start();
+               }
+            }
 
-        } catch (IOException e) {
+
+        catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -154,41 +136,83 @@ public class MainActivity extends AppCompatActivity implements AudioInterface {
         addRecording();
     }
 
-//    public void (View view) {
-//
-//    }
+    private void stopRecording() {
+
+        try {
+            ((Chronometer) findViewById(R.id.text_view_countdown)).stop();
+            mediaRecorder.stop();
+
+            mediaRecorder.reset();
+            mediaRecorder.release();
+            mediaRecorder = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void stopRecording(View view) {
 
         stopRecording();
-        final AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Title")
-                .setMessage("Do You Want To Save Audio ?")
-                .setPositiveButton("YES", null)
-                .setNegativeButton("NO", null)
-                .show();
+//        final AlertDialog dialog = new AlertDialog.Builder(this)
+//                .setTitle("Title")
+//                .setMessage("Do You Want To Save Audio ?")
+//                .setPositiveButton("YES", null)
+//                .setNegativeButton("NO", null)
+//                .show();
+//
+//        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        positiveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                recentAudio = myDir.listFiles();
+////                audioAdaptor = new AudioAdaptor(files, colors, MainActivity.this);
+////                recyclerView.setAdapter(audioAdaptor);
+//                Toast.makeText(MainActivity.this, "Audio Saved Successfully", Toast.LENGTH_SHORT).show();
+//                dialog.dismiss();
+//            }
+//        });
+//        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//        negativeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Toast.makeText(MainActivity.this, "Audio Deleted", Toast.LENGTH_SHORT).show();
+//                dialog.dismiss();
+//
+//            }
+//        });
+    }
 
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public void playAudio(View view) throws IOException {
+        MediaPlayer mp = new MediaPlayer();
+        mp.setDataSource(String.valueOf(file2));
+        if (mp != null) {
+            mp.prepare();
+            mp.start();
+        } else {
+            Toast.makeText(this, "No Audio to Play..!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-                recentAudio = myDir.listFiles();
-                audioAdaptor = new AudioAdaptor(files, colors, MainActivity.this);
-                recyclerView.setAdapter(audioAdaptor);
-                Toast.makeText(MainActivity.this, "Audio Saved Successfully", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public void deleteAudio(View view) {
+        Uri uri = Uri.parse(file2.toString());
+        File audioFiles = new File(uri.getPath());
+        audioFiles.delete();
+        chrono.setBase(SystemClock.elapsedRealtime());
+        Toast.makeText(this, "Audio Deleted!", Toast.LENGTH_SHORT).show();
+        // this.getContentResolver().delete(uri, null, null);
 
-                Toast.makeText(MainActivity.this, "Audio Deleted", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
 
-            }
-        });
+    }
+
+    public void uploadAudio(View view) {
+        Uri uri = Uri.parse(file2.toString());
+        Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
+//        Intent share = new Intent(Intent.ACTION_SEND);
+//        share.setType("audio/*");
+//        share.putExtra(Intent.EXTRA_STREAM, uri);
+//        this.startActivity(Intent.createChooser(share, "Share Sound File"));
+//
     }
 }
